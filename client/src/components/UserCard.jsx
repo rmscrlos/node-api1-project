@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Typography, CardContent, TextField, Button } from '@material-ui/core';
+
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import EditIcon from '@material-ui/icons/Edit';
 import styled from 'styled-components';
@@ -60,71 +61,73 @@ const UserCard = ({ user, fetchUsers }) => {
 	console.log(update);
 
 	return (
-		<Card>
-			<CardContent>
-				<Top>
-					<Typography color="textSecondary" gutterBottom>
-						User
-					</Typography>
-					<RightInTop>
-						<EditIcon style={{ width: '17px', cursor: 'pointer' }} onClick={() => setUpdate(!update)} />
-						<DeleteOutlinedIcon
-							style={{ width: '17px', cursor: 'pointer', marginLeft: '7px' }}
-							onClick={() => deleteUser(user.id)}
+		<>
+			<Card>
+				<CardContent>
+					<Top>
+						<Typography color="textSecondary" gutterBottom>
+							User
+						</Typography>
+						<RightInTop>
+							<EditIcon style={{ width: '17px', cursor: 'pointer' }} onClick={() => setUpdate(!update)} />
+							<DeleteOutlinedIcon
+								style={{ width: '17px', cursor: 'pointer', marginLeft: '7px' }}
+								onClick={() => deleteUser(user.id)}
+							/>
+						</RightInTop>
+					</Top>
+					{update ? (
+						<TextField
+							id="name"
+							label="Name"
+							name="name"
+							margin="dense"
+							aria-describedby="my-helper-text"
+							variant="outlined"
+							value={updatedUser.name}
+							onChange={handleChange}
+							required
 						/>
-					</RightInTop>
-				</Top>
-				{update ? (
-					<TextField
-						id="name"
-						label="Name"
-						name="name"
-						margin="dense"
-						aria-describedby="my-helper-text"
-						variant="outlined"
-						value={updatedUser.name}
-						onChange={handleChange}
-						required
-					/>
-				) : (
-					<Typography variant="h5" component="h2">
-						{user.name}
-					</Typography>
-				)}
-				{update ? (
-					<TextField
-						id="bio"
-						label="Bio"
-						name="bio"
-						margin="dense"
-						aria-describedby="my-helper-text"
-						variant="outlined"
-						value={updatedUser.bio}
-						onChange={handleChange}
-						required
-					/>
-				) : (
-					<Typography variant="body2" component="p">
-						{user.bio}
-					</Typography>
-				)}
-				{update ? (
-					<Button
-						style={{
-							backgroundColor: '#21D4FD',
-							backgroundImage: 'linear-gradient(19deg, #21D4FD 0%, #B721FF 100%)'
-						}}
-						variant="contained"
-						color="primary"
-						type="submit"
-						disabled={!updatedUser}
-						onClick={() => updateUser(user.id)}
-					>
-						update
-					</Button>
-				) : null}
-			</CardContent>
-		</Card>
+					) : (
+						<Typography variant="h5" component="h2">
+							{user.name}
+						</Typography>
+					)}
+					{update ? (
+						<TextField
+							id="bio"
+							label="Bio"
+							name="bio"
+							margin="dense"
+							aria-describedby="my-helper-text"
+							variant="outlined"
+							value={updatedUser.bio}
+							onChange={handleChange}
+							required
+						/>
+					) : (
+						<Typography variant="body2" component="p">
+							{user.bio}
+						</Typography>
+					)}
+					{update ? (
+						<Button
+							style={{
+								backgroundColor: '#21D4FD',
+								backgroundImage: 'linear-gradient(19deg, #21D4FD 0%, #B721FF 100%)'
+							}}
+							variant="contained"
+							color="primary"
+							type="submit"
+							disabled={!updatedUser}
+							onClick={() => updateUser(user.id)}
+						>
+							update
+						</Button>
+					) : null}
+				</CardContent>
+			</Card>
+		</>
 	);
 };
 

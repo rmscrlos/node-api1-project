@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Form from './components/Form';
 import UserList from './components/UserList';
 import axios from 'axios';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 const AppContainer = styled.div`
 	width: 90%;
@@ -40,7 +41,35 @@ const RightSide = styled.div`
 	padding: 0 1rem;
 `;
 
+const Alert = styled.div`
+	position: absolute;
+	color: rgb(149, 255, 57);
+	padding: 1rem;
+	left: 40%;
+	bottom: 10%;
+	display: flex;
+	align-items: center;
+	background: rgba(41, 45, 41, 0.235);
+	box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
+	border-radius: 10px;
+
+	animation: fadeIn ease-in-out 0.5s;
+
+	@keyframes fadeIn {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+`;
+
 function App() {
+	const [showMessage, setShowMessage] = useState(false);
+	const [message, setMessage] = useState('');
 	const [users, setUsers] = useState([]);
 
 	const fetchUsers = () => {
@@ -56,16 +85,33 @@ function App() {
 		fetchUsers();
 	}, []);
 
+	const hideMessage = () => {
+		setTimeout(() => {
+			setShowMessage(false);
+		}, 4000);
+	};
+
 	console.log(users);
 	return (
 		<AppContainer>
 			<LeftSide>
-				<Form fetchUsers={fetchUsers} />
+				<Form
+					fetchUsers={fetchUsers}
+					setMessage={setMessage}
+					setShowMessage={setShowMessage}
+					hideMessage={hideMessage}
+				/>
 			</LeftSide>
 			<Line />
 			<RightSide>
 				<UserList users={users} fetchUsers={fetchUsers} />
 			</RightSide>
+			{showMessage ? (
+				<Alert>
+					<CheckCircleIcon style={{ marginRight: '5px' }} />
+					{message}
+				</Alert>
+			) : null}
 		</AppContainer>
 	);
 }
