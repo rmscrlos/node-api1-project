@@ -12,6 +12,7 @@ const Card = styled.div`
 	-webkit-backdrop-filter: blur(4px);
 	border-radius: 10px;
 	width: 27%;
+	height: 20%;
 	margin: 1rem;
 `;
 
