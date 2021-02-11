@@ -66,7 +66,7 @@ const UserCard = ({ user, fetchUsers }) => {
 						User
 					</Typography>
 					<RightInTop>
-						<EditIcon style={{ width: '17px', cursor: 'pointer' }} onClick={() => setUpdate(true)} />
+						<EditIcon style={{ width: '17px', cursor: 'pointer' }} onClick={() => setUpdate(!update)} />
 						<DeleteOutlinedIcon
 							style={{ width: '17px', cursor: 'pointer', marginLeft: '7px' }}
 							onClick={() => deleteUser(user.id)}
