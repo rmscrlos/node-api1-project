@@ -2,10 +2,12 @@
 const express = require('express');
 const db = require('./users/model');
 const bp = require('body-parser');
+const cors = require('cors');
 
 const server = express();
 server.use(bp.json());
 server.use(bp.urlencoded({ extended: true }));
+server.use(cors());
 
 // gets/fetches/find users
 server.get('/api/users', async (req, res) => {
