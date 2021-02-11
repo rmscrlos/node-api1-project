@@ -19,7 +19,7 @@ function Form({ fetchUsers }) {
 		e.preventDefault();
 
 		axios
-			.post('http://localhost:5000/api/users', formValues)
+			.post('https://first-node-app-project.herokuapp.com/api/users', formValues)
 			.then(res => fetchUsers())
 			.catch(err => console.log(err));
 

@@ -45,7 +45,7 @@ function App() {
 
 	const fetchUsers = () => {
 		axios
-			.get('http://localhost:5000/api/users')
+			.get('https://first-node-app-project.herokuapp.com/api/users')
 			.then(res => {
 				setUsers(res.data);
 			})

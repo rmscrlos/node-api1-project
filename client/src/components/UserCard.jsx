@@ -34,14 +34,14 @@ const UserCard = ({ user, fetchUsers }) => {
 
 	const deleteUser = id => {
 		axios
-			.delete(`http://localhost:5000/api/users/${id}`)
+			.delete(`https://first-node-app-project.herokuapp.com/api/users/${id}`)
 			.then(res => fetchUsers())
 			.catch(err => console.log(err));
 	};
 
 	const updateUser = id => {
 		axios
-			.put(`http://localhost:5000/api/users/${id}`, updatedUser)
+			.put(`https://first-node-app-project.herokuapp.com/api/users/${id}`, updatedUser)
 			.then(res => {
 				fetchUsers();
 				setUpdate(false);
