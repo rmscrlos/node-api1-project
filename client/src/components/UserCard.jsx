@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
+// material ui
 import { Typography, CardContent, TextField, Button } from '@material-ui/core';
-
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import EditIcon from '@material-ui/icons/Edit';
+// styled component
 import styled from 'styled-components';
-import axios from 'axios';
+//redux stuff
+import { connect } from 'react-redux';
+
+//actions file functions
+import { updateUser, deleteUser } from '../actions/index';
 
 const Card = styled.div`
 	background: rgba(255, 255, 255, 0.3);
@@ -15,6 +20,14 @@ const Card = styled.div`
 	width: 27%;
 	height: 20%;
 	margin: 1rem;
+
+	@media screen and (max-width: 800px) {
+		width: 100%;
+	}
+
+	@media screen and (max-width: 450px) {
+		width: 80%;
+	}
 `;
 
 const Top = styled.div`
@@ -25,31 +38,18 @@ const Top = styled.div`
 const RightInTop = styled.div`
 	display: flex;
 	justify-content: space-between;
+
+	@media screen and (max-width: 450px) {
+		width: 15%;
+	}
 `;
 
-const UserCard = ({ user, fetchUsers }) => {
+const UserCard = ({ user, updateUser, deleteUser }) => {
 	const [update, setUpdate] = useState(false);
 	const [updatedUser, setUpdatedUser] = useState({
 		name: '',
 		bio: ''
 	});
-
-	const deleteUser = id => {
-		axios
-			.delete(`https://first-node-app-project.herokuapp.com/api/users/${id}`)
-			.then(res => fetchUsers())
-			.catch(err => console.log(err));
-	};
-
-	const updateUser = id => {
-		axios
-			.put(`https://first-node-app-project.herokuapp.com/api/users/${id}`, updatedUser)
-			.then(res => {
-				fetchUsers();
-				setUpdate(false);
-			})
-			.catch(err => console.log(err));
-	};
 
 	const handleChange = e => {
 		setUpdatedUser({
@@ -120,7 +120,10 @@ const UserCard = ({ user, fetchUsers }) => {
 							color="primary"
 							type="submit"
 							disabled={!updatedUser}
-							onClick={() => updateUser(user.id)}
+							onClick={() => {
+								updateUser(user.id, updatedUser);
+								setUpdate(!update);
+							}}
 						>
 							update
 						</Button>
@@ -131,4 +134,12 @@ const UserCard = ({ user, fetchUsers }) => {
 	);
 };
 
-export default UserCard;
+const mapStateToProps = state => {
+	return {
+		update: state.update
+	};
+};
+
+const mapDispatchToProps = { updateUser, deleteUser };
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserCard);

@@ -1,14 +1,35 @@
 import React from 'react';
 import UserCard from './UserCard.jsx';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
 
-function UserList({ users, fetchUsers }) {
+const List = styled.div`
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+
+	@media screen and (max-width: 450px) {
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		margin: 0 auto;
+	}
+`;
+
+function UserList({ users }) {
 	return (
-		<div style={{ width: '100%', display: 'flex', flexWrap: 'wrap' }}>
+		<List>
 			{users.map(user => {
-				return <UserCard key={user.id} user={user} fetchUsers={fetchUsers} />;
+				return <UserCard key={user.id} user={user} />;
 			})}
-		</div>
+		</List>
 	);
 }
 
-export default UserList;
+const mapStateToProps = state => {
+	return {
+		users: state.users
+	};
+};
+
+export default connect(mapStateToProps, null)(UserList);

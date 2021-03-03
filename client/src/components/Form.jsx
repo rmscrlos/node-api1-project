@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import { FormControl, TextField, Button, Typography } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { createUser, hideMessage, fetchUsers } from '../actions/index';
 import styled from 'styled-components';
-import axios from 'axios';
 
-function Form({ fetchUsers, setMessage, setShowMessage, hideMessage }) {
+const FormContainer = styled.div`
+	padding: 1.5rem;
+`;
+
+function Form({ createUser, hideMessage, fetchUsers }) {
 	const [formValues, setFormValues] = useState({
 		name: '',
 		bio: ''
@@ -19,16 +24,9 @@ function Form({ fetchUsers, setMessage, setShowMessage, hideMessage }) {
 	const handleSubmit = e => {
 		e.preventDefault();
 
-		axios
-			.post('https://first-node-app-project.herokuapp.com/api/users', formValues)
-			.then(res => {
-				console.log(res);
-				setMessage(res.data.message);
-				setShowMessage(true);
-				hideMessage();
-				fetchUsers();
-			})
-			.catch(err => console.log(err));
+		createUser(formValues);
+		hideMessage();
+		fetchUsers();
 
 		setFormValues({
 			name: '',
@@ -38,7 +36,7 @@ function Form({ fetchUsers, setMessage, setShowMessage, hideMessage }) {
 
 	return (
 		<>
-			<div>
+			<FormContainer>
 				<Typography align="center" variant="h5" style={{ color: '#313131', textTransform: 'lowercase' }}>
 					Add user
 				</Typography>
@@ -80,9 +78,11 @@ function Form({ fetchUsers, setMessage, setShowMessage, hideMessage }) {
 						</Button>
 					</FormControl>
 				</form>
-			</div>
+			</FormContainer>
 		</>
 	);
 }
 
-export default Form;
+const mapDispatchToProps = { createUser, hideMessage, fetchUsers };
+
+export default connect(null, mapDispatchToProps)(Form);

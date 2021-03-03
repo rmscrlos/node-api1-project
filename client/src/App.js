@@ -2,15 +2,30 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Form from './components/Form';
 import UserList from './components/UserList';
-import axios from 'axios';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import { connect } from 'react-redux';
+
+import { fetchUsers } from './actions/index';
 
 const AppContainer = styled.div`
 	width: 90%;
-	height: 90vh;
 	margin: 1rem auto;
 	padding: 1rem;
 	display: flex;
+
+	@media screen and (max-width: 600px) {
+		flex-direction: column;
+		width: 100%;
+		margin: 0 auto;
+		padding: 0;
+	}
+
+	@media screen and (max-width: 450px) {
+		flex-direction: column;
+		width: 100%;
+		margin: 0 auto;
+		padding: 0;
+	}
 `;
 
 const LeftSide = styled.div`
@@ -26,19 +41,59 @@ const LeftSide = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+	@media screen and (max-width: 800px) {
+		width: 50%;
+	}
+
+	@media screen and (max-width: 600px) {
+		width: 55%;
+		margin: 1rem auto;
+	}
+
+	@media screen and (max-width: 450px) {
+		width: 93%;
+		height: 60%;
+	}
 `;
 
 const Line = styled.div`
 	background: rgba(255, 255, 255, 0.4);
-	width: 0.5px;
-	height: 95%;
+	height: 35rem;
+	width: 0.01rem;
 	margin: auto 1rem;
+
+	@media screen and (max-width: 800px) {
+		height: 35rem;
+	}
+
+	@media screen and (max-width: 600px) {
+		width: 22rem;
+		height: 0.07rem;
+		margin: 0 auto;
+	}
+
+	@media screen and (max-width: 450px) {
+		width: 22rem;
+		height: 0.07rem;
+		margin: 0 auto;
+	}
 `;
 
 const RightSide = styled.div`
 	height: 100%;
 	width: 63%;
 	padding: 0 1rem;
+
+	@media screen and (max-width: 600px) {
+		margin: 0 auto;
+	}
+
+	@media screen and (max-width: 450px) {
+		width: 95%;
+		margin: 0 auto;
+		padding: 0;
+	}
 `;
 
 const Alert = styled.div`
@@ -67,53 +122,37 @@ const Alert = styled.div`
 	}
 `;
 
-function App() {
-	const [showMessage, setShowMessage] = useState(false);
-	const [message, setMessage] = useState('');
-	const [users, setUsers] = useState([]);
-
-	const fetchUsers = () => {
-		axios
-			.get('https://first-node-app-project.herokuapp.com/api/users')
-			.then(res => {
-				setUsers(res.data);
-			})
-			.catch(err => console.log(err));
-	};
-
+function App({ notification, showNotification, fetchUsers }) {
 	useEffect(() => {
 		fetchUsers();
 	}, []);
 
-	const hideMessage = () => {
-		setTimeout(() => {
-			setShowMessage(false);
-		}, 4000);
-	};
-
-	console.log(users);
 	return (
 		<AppContainer>
 			<LeftSide>
-				<Form
-					fetchUsers={fetchUsers}
-					setMessage={setMessage}
-					setShowMessage={setShowMessage}
-					hideMessage={hideMessage}
-				/>
+				<Form />
 			</LeftSide>
 			<Line />
 			<RightSide>
-				<UserList users={users} fetchUsers={fetchUsers} />
+				<UserList />
 			</RightSide>
-			{showMessage ? (
+			{showNotification ? (
 				<Alert>
 					<CheckCircleIcon style={{ marginRight: '5px' }} />
-					{message}
+					{notification}
 				</Alert>
 			) : null}
 		</AppContainer>
 	);
 }
 
-export default App;
+const mapStateToProps = state => {
+	return {
+		notification: state.notification,
+		showNotification: state.showNotification
+	};
+};
+
+const mapDispatchToProps = { fetchUsers };
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
